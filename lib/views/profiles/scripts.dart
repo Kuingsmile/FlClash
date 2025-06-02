@@ -136,12 +136,9 @@ class _ScriptsViewState extends ConsumerState<ScriptsView> {
               return appLocalizations.emptyTip(appLocalizations.name);
             }
             if (value != script?.label) {
-              final index = ref
-                  .read(scriptStateProvider.select((state) => state.scripts))
-                  .indexWhere(
-                    (item) => item.label == value,
-                  );
-              if (index != -1) {
+              final isExits =
+                  ref.read(scriptStateProvider.notifier).isExits(value);
+              if (isExits) {
                 return appLocalizations.existsTip(
                   appLocalizations.name,
                 );
@@ -155,6 +152,18 @@ class _ScriptsViewState extends ConsumerState<ScriptsView> {
         return;
       }
       newScript = newScript.copyWith(label: res);
+    }
+    if (newScript.label != script?.label) {
+      final isExits =
+          ref.read(scriptStateProvider.notifier).isExits(newScript.label);
+      if (isExits) {
+        globalState.showMessage(
+          message: TextSpan(
+            text: appLocalizations.existsTip(appLocalizations.name),
+          ),
+        );
+        return;
+      }
     }
     ref.read(scriptStateProvider.notifier).setScript(newScript);
     if (mounted) {

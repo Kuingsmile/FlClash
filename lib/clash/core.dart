@@ -214,10 +214,7 @@ class ClashCore {
     final profilePath = await appPath.getProfilePath(id);
     final res = await clashInterface.getConfig(profilePath);
     if (res.isSuccess) {
-      final data = (res.data ?? {}) as Map<String, dynamic>;
-      data["rules"] = data["rule"];
-      data.remove("rule");
-      return data;
+      return res.data as Map<String, dynamic>;
     } else {
       throw res.message;
     }

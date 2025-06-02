@@ -313,10 +313,7 @@ class GlobalState {
       return {};
     }
     final profileId = profile.id;
-    final configMap = await switch (clashLibHandler != null) {
-      true => clashLibHandler!.getConfig(profileId),
-      false => clashCore.getConfig(profileId),
-    };
+    final configMap = await getProfileConfig(profileId);
     final rawConfig = await handleEvaluate(configMap);
     final routeAddress =
         config.networkProps.routeMode == RouteMode.bypassPrivate
@@ -441,6 +438,16 @@ class GlobalState {
     }
     rawConfig["rule"] = rules;
     return rawConfig;
+  }
+
+  Future<Map<String, dynamic>> getProfileConfig(String profileId) async {
+    final configMap = await switch (clashLibHandler != null) {
+      true => clashLibHandler!.getConfig(profileId),
+      false => clashCore.getConfig(profileId),
+    };
+    configMap["rules"] = configMap["rule"];
+    configMap.remove("rule");
+    return configMap;
   }
 
   Future<Map<String, dynamic>> handleEvaluate(

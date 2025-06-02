@@ -249,8 +249,6 @@ class ClashLibHandler {
       return {};
     }
     final config = json.decode(configString);
-    config["rules"] = config["rule"];
-    config.remove("rule");
     malloc.free(pathChar);
     clashFFI.freeCString(configRaw);
     return config;

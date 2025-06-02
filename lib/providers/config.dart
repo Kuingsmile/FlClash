@@ -285,6 +285,10 @@ class ScriptState extends _$ScriptState with AutoDisposeNotifierMixin {
       currentId: nextId,
     );
   }
+
+  isExits(String label) {
+    return state.scripts.indexWhere((item) => item.label == label) != -1;
+  }
 }
 
 @riverpod
