@@ -102,6 +102,13 @@ class _WindowContainerState extends ConsumerState<WindowManager>
   }
 
   @override
+  void onWindowMaximize() {
+    commonPrint.log("maximize");
+    render?.pause();
+    super.onWindowMaximize();
+  }
+
+  @override
   Future<void> onTaskbarCreated() async {
     // globalState.appController.updateTray(true);
     super.onTaskbarCreated();
